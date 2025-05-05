@@ -20,8 +20,12 @@ class _PromptScreenState extends State<PromptScreen> {
     // Fetch the prompt when the screen is loaded
     final promptProvider = Provider.of<PromptProvider>(context, listen: false);
     final userProvider = Provider.of<UserProvider>(context, listen: false);
-    userProvider.fetchCurrentUser();
-    promptProvider.fetchPrompt(widget.promptId, userProvider.currentUser?.id ?? '');
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      userProvider.fetchCurrentUser();
+      promptProvider.fetchPrompt(widget.promptId, userProvider.currentUser?.id ?? '');
+    });
+    
   }
 
   @override
@@ -46,8 +50,8 @@ class _PromptScreenState extends State<PromptScreen> {
               : Column(
                   crossAxisAlignment: CrossAxisAlignment.start, // Align text to the start
                   children: [
-                    Text('Content: ${promptProvider.selectedPrompt.id}'),
-                    Text('Posted by: ${promptProvider.selectedPrompt.ownerAlias}'),
+                    Text('Content: ${promptProvider.selectedPrompt?.id}'),
+                    Text('Posted by: ${promptProvider.selectedPrompt?.ownerAlias}'),
                   ],
                 ),
     );

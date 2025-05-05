@@ -10,7 +10,7 @@ class PromptProvider with ChangeNotifier {
   final PromptService _promptService;
   final SubscriptionManager _subscriptionManager = SubscriptionManager();
   List<Prompt> _prompts = [];
-  late Prompt _selectedPrompt;
+  late Prompt? _selectedPrompt;
   bool _isLoading = false;
   String? _errorMessage;
 
@@ -18,7 +18,7 @@ class PromptProvider with ChangeNotifier {
 
   // Getters
   List<Prompt> get prompts => List.unmodifiable(_prompts);
-  Prompt get selectedPrompt => _selectedPrompt;
+  Prompt? get selectedPrompt => _selectedPrompt;
 
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
@@ -37,6 +37,7 @@ class PromptProvider with ChangeNotifier {
     } else {
       _selectedPrompt = prompt.copyWith();
     }
+    notifyListeners();
   }
 
   // Fetch all prompts and update the state
@@ -45,6 +46,7 @@ class PromptProvider with ChangeNotifier {
 
     _isLoading = true;
     _errorMessage = null;
+    notifyListeners();
 
     try {
       final promptStream = _promptService.fetchAllPrompts(userId);
@@ -77,6 +79,7 @@ class PromptProvider with ChangeNotifier {
 
     _isLoading = true;
     _errorMessage = null;
+    notifyListeners();
 
     try {
       final promptStream = _promptService.fetchMorePrompts(page, userId);
@@ -111,7 +114,7 @@ class PromptProvider with ChangeNotifier {
 
     _isLoading = true;
     _errorMessage = null;
-
+    notifyListeners();
     try {
       final promptStream = _promptService.fetchMorePromptFromOwner(ownerId, page);
       _subscriptionManager.addSubscription(
@@ -145,7 +148,7 @@ class PromptProvider with ChangeNotifier {
 
     _isLoading = true;
     _errorMessage = null;
-
+    notifyListeners();
     try {
       final promptStream = _promptService.fetchPrompt(id, userId);
       _subscriptionManager.addSubscription(
@@ -177,7 +180,7 @@ class PromptProvider with ChangeNotifier {
 
     _isLoading = true;
     _errorMessage = null;
-
+    notifyListeners();
     try {
       final newPrompt = await _promptService.postPrompt(prompt);
       _addPrompt(newPrompt);
@@ -197,7 +200,7 @@ class PromptProvider with ChangeNotifier {
 
     _isLoading = true;
     _errorMessage = null;
-
+    notifyListeners();
     try {
       await _promptService.removePrompt(promptId);
       _prompts = _prompts.where((p) => p.id != promptId).toList();
@@ -217,7 +220,7 @@ class PromptProvider with ChangeNotifier {
 
     _isLoading = true;
     _errorMessage = null;
-
+    notifyListeners();
     try {
       final updatedPromptStream = _promptService.addCommentToPrompt(promptId, comment);
       _subscriptionManager.addSubscription(
@@ -249,7 +252,7 @@ class PromptProvider with ChangeNotifier {
 
     _isLoading = true;
     _errorMessage = null;
-
+    notifyListeners();
     try {
       final updatedPromptStream = _promptService.incrementPromptStars(promptId);
       _subscriptionManager.addSubscription(
@@ -281,7 +284,7 @@ class PromptProvider with ChangeNotifier {
 
     _isLoading = true;
     _errorMessage = null;
-
+    notifyListeners();
     try {
       final updatedPromptStream = _promptService.updatePrompt(prompt);
       _subscriptionManager.addSubscription(
@@ -313,7 +316,7 @@ class PromptProvider with ChangeNotifier {
 
     _isLoading = true;
     _errorMessage = null;
-
+    notifyListeners();
     try {
       final updatedCommentStream = _promptService.updateComment(comment);
       _subscriptionManager.addSubscription(
@@ -353,7 +356,7 @@ class PromptProvider with ChangeNotifier {
 
     _isLoading = true;
     _errorMessage = null;
-
+    notifyListeners();
     try {
       final updatedPromptStream = _promptService.removePromptStar(promptId);
       _subscriptionManager.addSubscription(
@@ -385,7 +388,7 @@ class PromptProvider with ChangeNotifier {
 
     _isLoading = true;
     _errorMessage = null;
-
+    notifyListeners();
     try {
       final updatedPromptStream = _promptService.upvoteAnswer(promptId, answerId);
       _subscriptionManager.addSubscription(
@@ -417,7 +420,7 @@ class PromptProvider with ChangeNotifier {
 
     _isLoading = true;
     _errorMessage = null;
-
+    notifyListeners();
     try {
       final updatedPromptStream = _promptService.downvoteAnswer(promptId, answerId);
       _subscriptionManager.addSubscription(
@@ -449,7 +452,7 @@ class PromptProvider with ChangeNotifier {
 
     _isLoading = true;
     _errorMessage = null;
-
+    notifyListeners();
     try {
       final updatedPromptStream = _promptService.postAnswer(promptId, answers);
       _subscriptionManager.addSubscription(
@@ -481,7 +484,7 @@ class PromptProvider with ChangeNotifier {
 
     _isLoading = true;
     _errorMessage = null;
-
+    notifyListeners();
     try {
       final updatedPromptStream = _promptService.removeAnswer(promptId, answerId);
       _subscriptionManager.addSubscription(
@@ -513,7 +516,7 @@ class PromptProvider with ChangeNotifier {
 
     _isLoading = true;
     _errorMessage = null;
-
+    notifyListeners();
     try {
       final updatedPromptStream = _promptService.updateAnswer(promptId, answerId, updatedAnswer);
       _subscriptionManager.addSubscription(

@@ -20,14 +20,18 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    // Fetch the first page of prompts when the screen is loaded
     final promptProvider = Provider.of<PromptProvider>(context, listen: false);
     final userProvider = Provider.of<UserProvider>(context, listen: false);
-    userProvider.fetchCurrentUser();
-    promptProvider.fetchMorePrompts(_currentPage,userProvider.currentUser?.id ?? '');
+    
+    // Fetch the first page of prompts when the screen is loaded
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      userProvider.fetchCurrentUser();
+      promptProvider.fetchMorePrompts(_currentPage,userProvider.currentUser?.id ?? '');
+    });
+    
 
     // Add a listener to the scroll controller for infinite scrolling
-    _scrollController.addListener(_onScroll);
+    //_scrollController.addListener(_onScroll);
   }
 
   @override
@@ -40,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
       // Reached the end of the list, fetch the next page
       _currentPage++;
-      final promptProvider = Provider.of<PromptProvider>(context, listen: false);
+      final promptProvider = context.watch<PromptProvider>();
       final userProvider = context.watch<UserProvider>();
       userProvider.fetchCurrentUser();
       promptProvider.fetchMorePrompts(_currentPage, userProvider.currentUser?.id ?? '');
