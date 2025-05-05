@@ -62,7 +62,7 @@ class PromptCard extends StatelessWidget {
   Widget _buildHeader(BuildContext context) {
     return Row(
       children: [
-        CircleAvatar(
+        const CircleAvatar(
           radius: 16,
           /*backgroundImage: NetworkImage(prompt.ownerPictureUrl),*/
         ),
