@@ -1,5 +1,5 @@
 class Delayer {
     static Duration delay() {
-      return const Duration(seconds: 1);
+      return const Duration(seconds: 3);
     }
 }

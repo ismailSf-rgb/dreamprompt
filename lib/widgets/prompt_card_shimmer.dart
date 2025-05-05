@@ -6,114 +6,119 @@ class PromptCardShimmer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final baseColor = isDarkMode ? Colors.grey[800]! : Colors.grey[300]!;
+    final highlightColor = isDarkMode ? Colors.grey[700]! : Colors.grey[100]!;
+
+    return Shimmer.fromColors(
+      baseColor: baseColor,
+      highlightColor: highlightColor,
+      child: ListView.builder(
+        physics: const NeverScrollableScrollPhysics(),
+        padding: const EdgeInsets.only(top: 8),
+        itemCount: 10, // Enough to fill the viewport
+        itemBuilder: (_, index) => _buildShimmerCard(),
+      ),
+    );
+  }
+
+  Widget _buildShimmerCard() {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 0),
       elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(0),
-        side: BorderSide(
-          color: Theme.of(context).dividerColor,
-          width: 0.5,
-        ),
-      ),
+      color: Colors.transparent,
       child: Padding(
         padding: const EdgeInsets.all(12.0),
-        child: Shimmer.fromColors(
-          baseColor: Colors.grey[300]!,
-          highlightColor: Colors.grey[100]!,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Header shimmer
-              Row(
-                children: [
-                  const CircleAvatar(radius: 16, backgroundColor: Colors.white),
-                  const SizedBox(width: 8),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: 100,
-                        height: 16,
-                        color: Colors.white,
-                      ),
-                      const SizedBox(height: 4),
-                      Container(
-                        width: 60,
-                        height: 12,
-                        color: Colors.white,
-                      ),
-                    ],
-                  ),
-                  const Spacer(),
-                  Container(
-                    width: 24,
-                    height: 24,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Header
+            Row(
+              children: [
+                Container(
+                  width: 32,
+                  height: 32,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
                     color: Colors.white,
                   ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              
-              // Content shimmer
-              Container(
-                width: double.infinity,
-                height: 16,
-                color: Colors.white,
-              ),
-              const SizedBox(height: 8),
-              Container(
-                width: double.infinity,
-                height: 16,
-                color: Colors.white,
-              ),
-              const SizedBox(height: 8),
-              Container(
-                width: 200,
-                height: 16,
-                color: Colors.white,
-              ),
-              const SizedBox(height: 16),
-              
-              // Footer shimmer
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        width: 24,
-                        height: 24,
-                        color: Colors.white,
-                      ),
-                      const SizedBox(width: 8),
-                      Container(
-                        width: 24,
-                        height: 16,
-                        color: Colors.white,
-                      ),
-                      const SizedBox(width: 8),
-                      Container(
-                        width: 24,
-                        height: 24,
-                        color: Colors.white,
-                      ),
-                    ],
-                  ),
-                  Container(
-                    width: 80,
-                    height: 24,
-                    color: Colors.white,
-                  ),
-                  Container(
-                    width: 24,
-                    height: 24,
-                    color: Colors.white,
-                  ),
-                ],
-              ),
-            ],
-          ),
+                ),
+                const SizedBox(width: 12),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: 120,
+                      height: 14,
+                      color: Colors.white,
+                    ),
+                    const SizedBox(height: 6),
+                    Container(
+                      width: 80,
+                      height: 12,
+                      color: Colors.white,
+                    ),
+                  ],
+                ),
+                const Spacer(),
+                Container(
+                  width: 24,
+                  height: 24,
+                  color: Colors.white,
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            
+            // Content lines (3 lines of varying width)
+            Container(
+              width: double.infinity,
+              height: 14,
+              color: Colors.white,
+            ),
+            const SizedBox(height: 8),
+            Container(
+              width: double.infinity,
+              height: 14,
+              color: Colors.white,
+            ),
+            const SizedBox(height: 8),
+            Container(
+              width: 200,
+              height: 14,
+              color: Colors.white,
+            ),
+            const SizedBox(height: 16),
+            
+            // Footer actions
+            Row(
+              children: [
+                Container(
+                  width: 24,
+                  height: 24,
+                  color: Colors.white,
+                ),
+                const SizedBox(width: 16),
+                Container(
+                  width: 24,
+                  height: 24,
+                  color: Colors.white,
+                ),
+                const SizedBox(width: 16),
+                Container(
+                  width: 24,
+                  height: 24,
+                  color: Colors.white,
+                ),
+                const Spacer(),
+                Container(
+                  width: 24,
+                  height: 24,
+                  color: Colors.white,
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );
