@@ -1,4 +1,6 @@
-class Answer {
+import 'package:equatable/equatable.dart';
+
+class Answer extends Equatable {
   final String? id; // Unique identifier for the answer
   final String content; // The content of the answer
   final String source; // The source of the answer (e.g., OpenAI, DeepSeek)
@@ -8,7 +10,7 @@ class Answer {
   final String ownerId; // Identifier for the user posting the answer
 
   // Constructor
-  Answer({
+  const Answer({
     this.id,
     required this.content,
     required this.source,
@@ -71,27 +73,5 @@ class Answer {
   }
 
   @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is Answer &&
-        other.id == id &&
-        other.content == content &&
-        other.source == source &&
-        other.category == category &&
-        other.upvotes == upvotes && // Compare upvotes field
-        other.downvotes == downvotes && // Compare downvotes field
-        other.ownerId == ownerId; // Compare ownerId field
-  }
-
-  @override
-  int get hashCode {
-    return id.hashCode ^
-        content.hashCode ^
-        source.hashCode ^
-        category.hashCode ^
-        upvotes.hashCode ^ // Include upvotes in hashCode calculation
-        downvotes.hashCode ^ // Include downvotes in hashCode calculation
-        ownerId.hashCode; // Include ownerId in hashCode calculation
-  }
+  List<Object?> get props => [id, content, source, category, upvotes, downvotes, ownerId];
 }

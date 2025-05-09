@@ -1,8 +1,9 @@
+import 'package:equatable/equatable.dart';
+
 import 'comment.dart';
-import 'package:collection/collection.dart';
 import 'answer.dart';
 
-class Prompt {
+class Prompt extends Equatable {
   final String? id;
   final String content;
   final String ownerId; // Changed back to String
@@ -15,7 +16,7 @@ class Prompt {
   final List<Answer> aiAnswers; // List of AI answers
 
   // Constructor with default values for stars and aiAnswers
-  Prompt({
+  const Prompt({
     this.id,
     required this.content,
     required this.ownerId, // Now a String
@@ -98,33 +99,5 @@ class Prompt {
   }
 
   @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is Prompt &&
-        other.id == id &&
-        other.content == content &&
-        other.ownerId == ownerId && // Now a String
-        other.ownerAlias == ownerAlias && // Compare ownerAlias field
-        other.ownerPictureUrl == ownerPictureUrl && // Compare ownerPictureUrl field
-        other.createdDate == createdDate &&
-        other.lastModifiedDate == lastModifiedDate &&
-        const ListEquality().equals(other.comments, comments) &&
-        other.stars == stars && // Compare stars field
-        const ListEquality().equals(other.aiAnswers, aiAnswers); // Compare AI answers
-  }
-
-  @override
-  int get hashCode {
-    return id.hashCode ^
-        content.hashCode ^
-        ownerId.hashCode ^ // Now a String
-        ownerAlias.hashCode ^ // Include ownerAlias in hashCode calculation
-        ownerPictureUrl.hashCode ^ // Include ownerPictureUrl in hashCode calculation
-        createdDate.hashCode ^
-        lastModifiedDate.hashCode ^
-        comments.hashCode ^
-        stars.hashCode ^ // Include stars in hashCode calculation
-        aiAnswers.hashCode; // Include AI answers in hashCode calculation
-  }
+  List<Object?> get props => [id, content, ownerId, ownerAlias, ownerPictureUrl, createdDate, lastModifiedDate, comments, stars, aiAnswers];
 }

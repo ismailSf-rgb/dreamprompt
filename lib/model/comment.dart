@@ -1,4 +1,6 @@
-class Comment {
+import 'package:equatable/equatable.dart';
+
+class Comment extends Equatable {
   final String? id;
   final DateTime createdDate;
   final DateTime lastModifiedDate;
@@ -7,7 +9,7 @@ class Comment {
   final String ownerId;
 
   // Constructor
-  Comment({
+  const Comment({
     this.id,
     required this.createdDate,
     required this.lastModifiedDate,
@@ -65,25 +67,5 @@ class Comment {
   }
 
   @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is Comment &&
-        other.id == id &&
-        other.createdDate == createdDate &&
-        other.lastModifiedDate == lastModifiedDate &&
-        other.content == content &&
-        other.stars == stars &&
-        other.ownerId == ownerId;
-  }
-
-  @override
-  int get hashCode {
-    return id.hashCode ^
-        createdDate.hashCode ^
-        lastModifiedDate.hashCode ^
-        content.hashCode ^
-        stars.hashCode ^
-        ownerId.hashCode;
-  }
+  List<Object?> get props => [id, createdDate, lastModifiedDate, content, stars, ownerId];
 }

@@ -8,7 +8,6 @@ class ModelFactory {
   // Factory method to create a User instance
   static User createUser({
     String? id, // id is optional
-    required String uuid,
     required DateTime createdDate,
     required DateTime lastModifiedDate,
     List<Interest> interests = const [],

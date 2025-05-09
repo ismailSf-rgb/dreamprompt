@@ -1,10 +1,12 @@
-class Interest {
+import 'package:equatable/equatable.dart';
+
+class Interest extends Equatable {
   final String? id; // Unique identifier for the interest
   final String keyword; // The keyword representing the interest (e.g., "Flutter", "Dart")
   final double score; // A numeric value representing the user's level of interest or relevance
 
   // Constructor
-  Interest({
+  const Interest({
     this.id,
     required this.keyword,
     this.score = 0.0, // Default value for score
@@ -51,17 +53,6 @@ class Interest {
   }
 
   @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
+  List<Object?> get props => [id, keyword, score];
 
-    return other is Interest &&
-        other.id == id &&
-        other.keyword == keyword &&
-        other.score == score;
-  }
-
-  @override
-  int get hashCode {
-    return id.hashCode ^ keyword.hashCode ^ score.hashCode;
-  }
 }

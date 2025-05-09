@@ -1,7 +1,8 @@
-import 'interest.dart';
-import 'package:collection/collection.dart';
+import 'package:equatable/equatable.dart';
 
-class User {
+import 'interest.dart';
+
+class User extends Equatable {
   final String? id; // Unique string identifier for the user
   final DateTime createdDate; // Timestamp for when the user was created
   final DateTime lastModifiedDate; // Timestamp for when the user was last modified
@@ -10,7 +11,7 @@ class User {
   final String pictureUrl; // URL to the user's profile picture
 
   // Constructor
-  User({
+  const User({
     this.id,
     required this.createdDate,
     required this.lastModifiedDate,
@@ -76,25 +77,5 @@ class User {
   }
 
   @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is User &&
-        other.id == id &&
-        other.createdDate == createdDate &&
-        other.lastModifiedDate == lastModifiedDate &&
-        const ListEquality().equals(other.interests, interests) &&
-        other.alias == alias && // Compare alias field
-        other.pictureUrl == pictureUrl; // Compare pictureUrl field
-  }
-
-  @override
-  int get hashCode {
-    return id.hashCode ^
-        createdDate.hashCode ^
-        lastModifiedDate.hashCode ^
-        interests.hashCode ^
-        alias.hashCode ^ // Include alias in hashCode calculation
-        pictureUrl.hashCode; // Include pictureUrl in hashCode calculation
-  }
+  List<Object?> get props => [id, createdDate, lastModifiedDate, interests, alias, pictureUrl];
 }
