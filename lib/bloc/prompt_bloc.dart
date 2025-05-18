@@ -20,6 +20,7 @@ class PromptBloc extends Bloc<PromptEvent, PromptState> {
           ),
         ) {
     on<Load>(_onLoad);
+    on<FetchItem>(_onFetchItem);
     on<AddItem>(_onAddItem);
     on<RemoveItem>(_onRemoveItem);
     on<ClearError>(_onClearError);
@@ -28,6 +29,7 @@ class PromptBloc extends Bloc<PromptEvent, PromptState> {
   Future<void> _onLoad(Load event, Emitter emit) async {
     try {
       emit(state.copyWith(loadingResult: const DelayedResult.inProgress()));
+      await _promptRepository.fetchMorePrompts(0, 'userId');
       final promptInfo = await _promptRepository.promptInfoFuture;
 
       emit(
@@ -77,6 +79,16 @@ class PromptBloc extends Bloc<PromptEvent, PromptState> {
       emit(state.copyWith(loadingResult: const DelayedResult.inProgress()));
       await _promptRepository.removePrompt(event.item.id);
       emit(state.copyWith(loadingResult: const DelayedResult.idle()));
+    } on Exception catch (ex) {
+      emit(state.copyWith(loadingResult: DelayedResult.fromError(ex)));
+    }
+  }
+
+  Future<void> _onFetchItem(FetchItem event, Emitter emit) async {
+    try {
+      emit(state.copyWith(loadingResult: const DelayedResult.inProgress()));
+      await _promptRepository.fetchPrompt(event.item.id!, 'test');
+      emit(state.copyWith(loadingResult: const DelayedResult.idle(), selectedPrompt: event.item));
     } on Exception catch (ex) {
       emit(state.copyWith(loadingResult: DelayedResult.fromError(ex)));
     }

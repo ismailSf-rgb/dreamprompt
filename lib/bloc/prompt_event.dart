@@ -30,6 +30,15 @@ final class RemoveItem extends PromptEvent {
   List<Object?> get props => [item];
 }
 
+final class FetchItem extends PromptEvent {
+  final Prompt item;
+
+  const FetchItem(this.item);
+
+  @override
+  List<Object?> get props => [item];
+}
+
 final class ClearError extends PromptEvent {
   const ClearError();
 }

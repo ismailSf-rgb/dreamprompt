@@ -63,6 +63,7 @@ class _HomePageState extends State<HomePage> {
                   return PromptCard(
                     prompt: prompt,
                     onTap: () {
+                      _promptBloc.add(FetchItem(prompt));
                       // Navigate to the prompt details screen
                       GoRouter.of(context).push('/prompt/${prompt.id}');
                     },

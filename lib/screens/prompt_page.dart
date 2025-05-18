@@ -22,13 +22,11 @@ class _PromptPageState extends State<PromptPage> {
     super.initState();
     _promptBloc = context.read<PromptBloc>();
     _scrollController = ScrollController()..addListener(_onScroll);
-    _promptBloc.add(const Load());
   }
 
   void _onScroll() {
     if (_scrollController.position.pixels == 
         _scrollController.position.maxScrollExtent) {
-      _promptBloc.add(const Load());
     }
   }
 
