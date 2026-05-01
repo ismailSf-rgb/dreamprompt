@@ -24,6 +24,7 @@ class PromptBloc extends Bloc<PromptEvent, PromptState> {
     on<AddItem>(_onAddItem);
     on<RemoveItem>(_onRemoveItem);
     on<ClearError>(_onClearError);
+    on<LoadMore>(_onLoadMore);
   }
 
   Future<void> _onLoad(Load event, Emitter emit) async {
@@ -96,5 +97,42 @@ class PromptBloc extends Bloc<PromptEvent, PromptState> {
 
   void _onClearError(ClearError event, Emitter emit) {
     emit(state.copyWith(loadingResult: const DelayedResult.idle()));
+  }
+
+  Future<void> _onLoadMore(LoadMore event, Emitter emit) async {
+    try {
+      emit(state.copyWith(loadingResult: const DelayedResult.loadMore()));
+      final promptInfo = await _promptRepository.promptInfoFuture;
+      await _promptRepository.fetchMorePrompts(promptInfo.page + 1, 'userId');
+      emit(
+        state.copyWith(
+          items: promptInfo.items,
+          page: promptInfo.page + 1,
+          selectedPrompt: promptInfo.selectedPrompt,
+          runningUser: promptInfo.runningUser,
+        ),
+      );
+      emit(state.copyWith(loadingResult: const DelayedResult.idle()));
+      await emit.onEach(
+        _promptRepository.promptInfoStream,
+        onData: (PromptInfo promptInfo) {
+          emit(
+            state.copyWith(
+            items: promptInfo.items,
+            page: promptInfo.page + 1,
+            selectedPrompt: promptInfo.selectedPrompt,
+            runningUser: promptInfo.runningUser,
+          ),
+          );
+        },
+        onError: (Object error, StackTrace stackTrace) {
+          if (kDebugMode) {
+            print('Error: $error');
+          }
+        },
+      );
+    } on Exception catch (ex) {
+      emit(state.copyWith(loadingResult: DelayedResult.fromError(ex)));
+    }
   }
 }

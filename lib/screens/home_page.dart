@@ -29,7 +29,7 @@ class _HomePageState extends State<HomePage> {
   void _onScroll() {
     if (_scrollController.position.pixels == 
         _scrollController.position.maxScrollExtent) {
-      _promptBloc.add(const Load());
+      _promptBloc.add(const LoadMore());
     }
   }
 
@@ -75,7 +75,7 @@ class _HomePageState extends State<HomePage> {
                   );
                 } else {
                   // Display a loading indicator at the bottom
-                  return state.loadingResult.isInProgress
+                  return state.loadingResult.loadMoreInProgress
                       ? const Padding(
                           padding: EdgeInsets.all(16.0),
                           child: Center(child: CircularProgressIndicator()),

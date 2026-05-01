@@ -12,6 +12,10 @@ final class Load extends PromptEvent {
   const Load();
 }
 
+final class LoadMore extends PromptEvent {
+  const LoadMore();
+}
+
 final class AddItem extends PromptEvent {
   final Prompt item;
 
