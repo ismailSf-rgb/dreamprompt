@@ -4,6 +4,7 @@ import 'package:ideahub/bloc/prompt_bloc.dart';
 import 'package:ideahub/bloc/prompt_event.dart';
 import 'package:ideahub/repository/mock_prompt_repository.dart';
 import 'package:ideahub/repository/prompt_repository.dart';
+import 'package:ideahub/screens/create_prompt_page.dart';
 import 'package:ideahub/screens/home_page.dart';
 import 'package:ideahub/screens/prompt_page.dart';
 import 'package:provider/provider.dart';
@@ -44,10 +45,11 @@ class MyApp extends StatelessWidget {
         ),
         GoRoute(
           path: '/prompt/:id',
-          builder: (context, state) {
-            //might have to put an id param
-            return const PromptPage();
-          },
+          builder: (context, state) => const PromptPage(),
+        ),
+        GoRoute(
+          path: '/create',
+          builder: (context, state) => const CreatePromptPage(),
         ),
       ],
     );
